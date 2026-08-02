@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -35,22 +36,31 @@ test("server-renders the complete RushDish landing page", async () => {
   assert.match(html, /See the whole rush in one screen\./);
   assert.match(html, /Pay for the way you trade\./);
   assert.match(html, /Good questions\./);
+  assert.match(html, /Your QR\./);
+  assert.match(html, /Download QR code/);
+  assert.match(html, /rushdish-order-qr\.png/);
   assert.match(html, /og\.png/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
 test("ships project-specific metadata and removes starter assets", async () => {
-  const [layout, page, packageJson] = await Promise.all([
+  const [layout, page, packageJson, qrBytes] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../public/rushdish-order-qr.png", import.meta.url)),
   ]);
 
   assert.match(layout, /RushDish — QR ordering built for the rush/);
   assert.match(layout, /\/og\.png/);
   assert.match(page, /"use client"/);
   assert.match(page, /Send test order/);
+  assert.match(page, /download="rushdish-order-qr\.png"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+  assert.equal(
+    createHash("sha256").update(qrBytes).digest("hex").toUpperCase(),
+    "347D9E363AF68CC8533B4FDB5FCF60E5978994078B9D494030E42C632FCEDFC7",
+  );
   await access(new URL("../public/og.png", import.meta.url));
   await assert.rejects(access(new URL("../app/_sites-preview/SkeletonPreview.tsx", import.meta.url)));
 });

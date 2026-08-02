@@ -43,12 +43,6 @@ const demoItems: DemoItem[] = [
   },
 ];
 
-const qrPattern = new Set([
-  0, 1, 2, 4, 6, 7, 8, 9, 11, 13, 15, 17, 18, 19, 20, 22, 24, 25, 26,
-  30, 31, 33, 36, 38, 40, 42, 44, 45, 46, 48, 49, 52, 54, 56, 58, 60, 62,
-  63, 65, 67, 69, 71, 72, 73, 74, 76, 78, 79, 80,
-]);
-
 const money = new Intl.NumberFormat("en-GB", {
   style: "currency",
   currency: "GBP",
@@ -57,11 +51,7 @@ const money = new Intl.NumberFormat("en-GB", {
 
 function QRMark({ compact = false }: { compact?: boolean }) {
   return (
-    <span className={`qr-mark${compact ? " qr-mark--compact" : ""}`} aria-hidden="true">
-      {Array.from({ length: 81 }, (_, index) => (
-        <span className={qrPattern.has(index) ? "qr-cell qr-cell--on" : "qr-cell"} key={index} />
-      ))}
-    </span>
+    <span className={`qr-mark${compact ? " qr-mark--compact" : ""}`} aria-hidden="true" />
   );
 }
 
@@ -284,6 +274,7 @@ export default function Home() {
               <div className="hero-qr-card">
                 <QRMark />
                 <div><b>Skip the queue</b><span>Scan · Order · Collect</span></div>
+                <a className="qr-mini-download" href="/rushdish-order-qr.png" download="rushdish-order-qr.png" aria-label="Download RushDish QR code">↓</a>
               </div>
             </div>
           </div>
@@ -463,6 +454,26 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="qr-download-section section" id="download-qr">
+          <div className="qr-download-copy">
+            <p className="eyebrow">Ready to print</p>
+            <h2>Your QR.<br />Exactly as supplied.</h2>
+            <p>Download the original high-contrast PNG for truck signs, counter cards, menus and event boards. The same exact code now appears everywhere across the site.</p>
+            <div className="qr-download-actions">
+              <a className="button button--dark button--large" href="/rushdish-order-qr.png" download="rushdish-order-qr.png">Download QR code <span aria-hidden="true">↓</span></a>
+              <span>PNG · 360 × 360 px · 12 KB</span>
+            </div>
+          </div>
+          <div className="qr-download-preview">
+            <div className="print-card">
+              <span className="print-card-label">ORDER HERE</span>
+              <QRMark />
+              <div className="print-card-copy"><Brand /><p>SCAN · ORDER · COLLECT</p></div>
+            </div>
+            <div className="download-ready-badge"><span>✓</span><div><b>Download ready</b><small>Original supplied artwork</small></div></div>
+          </div>
+        </section>
+
         <section className="rush-control-section section">
           <div className="rush-copy">
             <p className="eyebrow">Rush control</p>
@@ -576,7 +587,7 @@ export default function Home() {
           <p className="eyebrow eyebrow--light">Built for the rush</p>
           <h2>Open the hatch.<br /><span>Let orders come to you.</span></h2>
           <p>Set up your menu, print the QR and run your next service from one clear queue.</p>
-          <div className="hero-actions"><button className="button button--lime button--large" type="button" onClick={openDemoRequest}>Start your first event <span aria-hidden="true">↗</span></button><a className="button button--ghost button--large" href="#live-demo">Try the live demo</a></div>
+          <div className="hero-actions"><button className="button button--lime button--large" type="button" onClick={openDemoRequest}>Start your first event <span aria-hidden="true">↗</span></button><a className="button button--ghost button--large" href="/rushdish-order-qr.png" download="rushdish-order-qr.png">Download QR code <span aria-hidden="true">↓</span></a><a className="button button--ghost button--large" href="#live-demo">Try the live demo</a></div>
         </section>
       </main>
 
