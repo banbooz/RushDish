@@ -110,25 +110,26 @@ a {
 .brand-lockup {
   align-items: center;
   display: inline-flex;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.045em;
-  gap: 9px;
-  white-space: nowrap;
+  flex: 0 0 auto;
+  line-height: 0;
 }
 
-.brand-mark {
-  align-items: center;
-  background: var(--ink);
-  border-radius: 8px;
-  color: var(--lime);
-  display: inline-flex;
-  font-size: 15px;
-  height: 30px;
-  justify-content: center;
-  letter-spacing: -0.08em;
-  transform: rotate(-4deg);
-  width: 30px;
+.brand-logo {
+  display: block;
+  height: 52px;
+  object-fit: contain;
+  width: 52px;
+}
+
+.print-card-copy .brand-logo {
+  height: 62px;
+  width: 62px;
+}
+
+.footer-brand .brand-logo {
+  height: 72px;
+  margin-bottom: 12px;
+  width: 72px;
 }
 
 .nav-links {
@@ -2702,6 +2703,7 @@ a {
 
 @media (max-width: 900px) {
   .site-header { border-radius: 24px; height: 62px; padding-left: 16px; top: 12px; width: calc(100% - 24px); }
+  .site-header .brand-logo { height: 46px; width: 46px; }
   .menu-toggle { display: flex; }
   .nav-links {
     align-items: stretch;

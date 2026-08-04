@@ -57,9 +57,14 @@ function QRMark({ compact = false }: { compact?: boolean }) {
 
 function Brand() {
   return (
-    <span className="brand-lockup" aria-label="RushDish home">
-      <span className="brand-mark">R</span>
-      <span>RushDish</span>
+    <span className="brand-lockup" role="img" aria-label="RushDish">
+      <img
+        className="brand-logo"
+        src="/rushdish-mascot.png"
+        alt=""
+        width={64}
+        height={64}
+      />
     </span>
   );
 }
