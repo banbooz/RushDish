@@ -60,10 +60,10 @@ function Brand() {
     <span className="brand-lockup" role="img" aria-label="RushDish">
       <img
         className="brand-logo"
-        src="/rushdish-mascot.png"
+        src="/rushdish-logo-final.png"
         alt=""
-        width={64}
-        height={64}
+        width={1023}
+        height={358}
       />
     </span>
   );

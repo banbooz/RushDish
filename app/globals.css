@@ -116,20 +116,20 @@ a {
 
 .brand-logo {
   display: block;
-  height: 52px;
+  height: 42px;
   object-fit: contain;
-  width: 52px;
+  width: auto;
 }
 
 .print-card-copy .brand-logo {
-  height: 62px;
-  width: 62px;
+  height: 48px;
+  width: auto;
 }
 
 .footer-brand .brand-logo {
-  height: 72px;
+  height: 64px;
   margin-bottom: 12px;
-  width: 72px;
+  width: auto;
 }
 
 .nav-links {
@@ -2703,7 +2703,7 @@ a {
 
 @media (max-width: 900px) {
   .site-header { border-radius: 24px; height: 62px; padding-left: 16px; top: 12px; width: calc(100% - 24px); }
-  .site-header .brand-logo { height: 46px; width: 46px; }
+  .site-header .brand-logo { height: 36px; width: auto; }
   .menu-toggle { display: flex; }
   .nav-links {
     align-items: stretch;
