@@ -34,11 +34,16 @@ test("server-renders the complete RushDish landing page", async () => {
   assert.match(html, /Feed the crowd\./);
   assert.match(html, /Lose the queue\./);
   assert.match(html, /See the whole rush in one screen\./);
-  assert.match(html, /Pay for the way you trade\./);
+  assert.match(html, /Clear costs\. No cut of your sales\./);
   assert.match(html, /Good questions\./);
-  assert.match(html, /Your QR\./);
-  assert.match(html, /Download QR code/);
-  assert.match(html, /rushdish-order-qr\.png/);
+  assert.match(html, /Scan once\./);
+  assert.match(html, /£200/);
+  assert.match(html, /£20/);
+  assert.match(html, /£500 upfront build cost/);
+  assert.match(html, /RECOMMENDED/);
+  assert.match(html, /0% platform fee/);
+  assert.match(html, /0% commission fee/);
+  assert.doesNotMatch(html, /Download QR code|download-ready|What could a shorter queue be worth\?|Working product concept/i);
   assert.match(html, /og\.png/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
@@ -55,7 +60,8 @@ test("ships project-specific metadata and removes starter assets", async () => {
   assert.match(layout, /\/og\.png/);
   assert.match(page, /"use client"/);
   assert.match(page, /Send test order/);
-  assert.match(page, /download="rushdish-order-qr\.png"/);
+  assert.doesNotMatch(page, /download=|Download QR code|calculator-section|MOST POPULAR/);
+  assert.match(page, /Higher-quality menu and QR design/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.equal(
     createHash("sha256").update(qrBytes).digest("hex").toUpperCase(),

@@ -69,10 +69,6 @@ export default function Home() {
   const [demoTab, setDemoTab] = useState<"guest" | "crew">("guest");
   const [cart, setCart] = useState<Record<string, number>>({});
   const [orderStage, setOrderStage] = useState<OrderStage>("building");
-  const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
-  const [extraOrders, setExtraOrders] = useState(8);
-  const [peakHours, setPeakHours] = useState(6);
-  const [averageTicket, setAverageTicket] = useState(13.5);
   const [demoModalOpen, setDemoModalOpen] = useState(false);
   const [formSent, setFormSent] = useState(false);
 
@@ -86,7 +82,6 @@ export default function Home() {
 
   const cartCount = cartRows.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cartRows.reduce((sum, item) => sum + item.quantity * item.price, 0);
-  const salesPotential = extraOrders * peakHours * averageTicket;
   const canEditOrder = orderStage === "building";
 
   useEffect(() => {
@@ -274,7 +269,6 @@ export default function Home() {
               <div className="hero-qr-card">
                 <QRMark />
                 <div><b>Skip the queue</b><span>Scan · Order · Collect</span></div>
-                <a className="qr-mini-download" href="/rushdish-order-qr.png" download="rushdish-order-qr.png" aria-label="Download RushDish QR code">↓</a>
               </div>
             </div>
           </div>
@@ -454,23 +448,24 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="qr-download-section section" id="download-qr">
-          <div className="qr-download-copy">
-            <p className="eyebrow">Ready to print</p>
-            <h2>Your QR.<br />Exactly as supplied.</h2>
-            <p>Download the original high-contrast PNG for truck signs, counter cards, menus and event boards. The same exact code now appears everywhere across the site.</p>
-            <div className="qr-download-actions">
-              <a className="button button--dark button--large" href="/rushdish-order-qr.png" download="rushdish-order-qr.png">Download QR code <span aria-hidden="true">↓</span></a>
-              <span>PNG · 360 × 360 px · 12 KB</span>
+        <section className="qr-scan-section section" id="scan-qr">
+          <div className="qr-scan-copy">
+            <p className="eyebrow">Quick to scan</p>
+            <h2>Scan once.<br />Menu open.</h2>
+            <p>A quick phone scan takes guests straight to your live menu—no searching, typing or app needed. They can browse, order and pay in seconds while your crew keeps serving.</p>
+            <div className="qr-scan-steps" aria-label="How QR ordering works">
+              <span><b>1</b> Point the camera</span>
+              <span><b>2</b> Tap the link</span>
+              <span><b>3</b> Menu opens</span>
             </div>
           </div>
-          <div className="qr-download-preview">
+          <div className="qr-scan-preview">
             <div className="print-card">
-              <span className="print-card-label">ORDER HERE</span>
+              <span className="print-card-label">SCAN TO ORDER</span>
               <QRMark />
-              <div className="print-card-copy"><Brand /><p>SCAN · ORDER · COLLECT</p></div>
+              <div className="print-card-copy"><Brand /><p>SCAN · MENU · ORDER</p></div>
             </div>
-            <div className="download-ready-badge"><span>✓</span><div><b>Download ready</b><small>Original supplied artwork</small></div></div>
+            <div className="scan-ready-badge"><span>✓</span><div><b>Menu opens instantly</b><small>No app or account needed</small></div></div>
           </div>
         </section>
 
@@ -487,22 +482,6 @@ export default function Home() {
             <div className="control-row"><span><b>Pickup estimate</b><small>Shown before checkout</small></span><div className="stepper"><button type="button" tabIndex={-1}>−</button><b>14 min</b><button type="button" tabIndex={-1}>+</button></div></div>
             <div className="control-block"><span><b>Rush mode</b><small>Adjust the pace in one tap</small></span><div className="segmented"><button type="button">Normal</button><button className="selected" type="button">Busy</button><button type="button">Maxed</button></div></div>
             <div className="control-toast"><span>✓</span><div><b>Loaded Fries marked sold out</b><small>Guests can no longer add this item.</small></div></div>
-          </div>
-        </section>
-
-        <section className="calculator-section section">
-          <div className="calculator-copy">
-            <p className="eyebrow eyebrow--light">Run the rush maths</p>
-            <h2>What could a shorter queue be worth?</h2>
-            <p>Adjust a simple event scenario. This is arithmetic, not a sales guarantee—the real result depends on demand, capacity and your operation.</p>
-          </div>
-          <div className="calculator-card">
-            <div className="calc-controls">
-              <label>Extra orders each peak hour <output>{extraOrders}</output><input type="range" min="1" max="30" value={extraOrders} onChange={(event) => setExtraOrders(Number(event.target.value))} /></label>
-              <label>Peak trading hours <output>{peakHours}</output><input type="range" min="1" max="16" value={peakHours} onChange={(event) => setPeakHours(Number(event.target.value))} /></label>
-              <label>Average order value <span className="input-prefix">£</span><input className="number-input" type="number" min="1" max="100" step="0.5" value={averageTicket} onChange={(event) => setAverageTicket(Math.max(1, Number(event.target.value) || 1))} /></label>
-            </div>
-            <div className="calc-result" aria-live="polite"><span>Additional sales potential</span><strong>{money.format(salesPotential)}</strong><p>{extraOrders} extra orders × {peakHours} hours × {money.format(averageTicket)}</p></div>
           </div>
         </section>
 
@@ -544,27 +523,26 @@ export default function Home() {
 
         <section className="pricing-section section" id="pricing">
           <div className="pricing-heading">
-            <div><p className="eyebrow">Simple pricing</p><h2>Pay for the way you trade.</h2><p>Choose one event or keep RushDish running all season. Payment-provider fees are separate. Prices exclude VAT.</p></div>
-            <div className="billing-toggle" aria-label="Roamer billing period"><button type="button" aria-pressed={billing === "monthly"} onClick={() => setBilling("monthly")}>Monthly</button><button type="button" aria-pressed={billing === "annual"} onClick={() => setBilling("annual")}>Annual <span>save 20%</span></button></div>
+            <div><p className="eyebrow">Estimated pricing</p><h2>Clear costs. No cut of your sales.</h2><p>Indicative pricing for one-off events or a full season. RushDish charges 0% platform fees and 0% commission fees. Payment-provider fees and VAT are separate.</p></div>
           </div>
           <div className="pricing-grid">
             <article className="price-card">
-              <span className="price-label">POP-UP</span><h3>One event day</h3><div className="price"><strong>£29</strong><span>/ event day<br />+ 1.5% platform fee</span></div><p>For occasional markets and one-off events.</p>
+              <span className="price-label">POP-UP</span><h3>One event day</h3><div className="price"><strong>£200</strong><span>/ event day<br /><b>0% platform fee</b><br /><b>0% commission fee</b></span></div><p>For occasional markets and one-off events.</p>
               <ul><li>1 truck and active event</li><li>QR menu and checkout</li><li>Live kitchen queue</li><li>Rush controls</li><li>Sales summary</li></ul>
               <button className="button button--light button--full" type="button" onClick={openDemoRequest}>Run one event</button>
             </article>
             <article className="price-card price-card--featured">
-              <span className="popular-badge">MOST POPULAR</span><span className="price-label">ROAMER</span><h3>All season</h3><div className="price"><strong>£{billing === "monthly" ? "69" : "55"}</strong><span>/ month<br />{billing === "annual" ? "billed £660 yearly" : "+ 0.75% platform fee"}</span></div><p>For food trucks trading every week.</p>
-              <ul><li>Unlimited event workspaces</li><li>Up to 5 crew members</li><li>Reusable and event-specific QRs</li><li>Live item availability</li><li>Order exports</li></ul>
+              <span className="recommended-badge">RECOMMENDED</span><span className="price-label">ROAMER</span><h3>All season</h3><div className="price"><strong>£20</strong><span>/ month<br /><b>+ £500 upfront build cost</b><br /><b>0% platform & commission fees</b></span></div><p>For regular traders who want a higher-quality, custom-designed ordering experience.</p>
+              <ul><li>Higher-quality menu and QR design</li><li>Custom season-ready build</li><li>Unlimited event workspaces</li><li>Up to 5 crew members</li><li>Live item availability</li></ul>
               <button className="button button--lime button--full" type="button" onClick={openDemoRequest}>Start roaming</button>
             </article>
             <article className="price-card">
-              <span className="price-label">FLEET</span><h3>Several service points</h3><div className="price"><strong>Let’s talk</strong></div><p>For operators running multiple trucks or pitches.</p>
+              <span className="price-label">FLEET</span><h3>Several service points</h3><div className="price"><strong>Custom estimate</strong></div><p>For operators running multiple trucks or pitches, with 0% platform and commission fees.</p>
               <ul><li>Multiple trucks</li><li>Central event overview</li><li>Location-specific menus</li><li>Roles and permissions</li><li>Guided setup</li></ul>
               <button className="button button--light button--full" type="button" onClick={openDemoRequest}>Talk to us</button>
             </article>
           </div>
-          <p className="pricing-note">No guest app required. Cancel a monthly plan before the next billing period. Payment-provider fees still apply.</p>
+          <p className="pricing-note">Estimated prices only. No platform fees. No commission fees. Payment-provider fees and VAT may apply.</p>
         </section>
 
         <section className="faq-section section" id="faq">
@@ -587,14 +565,13 @@ export default function Home() {
           <p className="eyebrow eyebrow--light">Built for the rush</p>
           <h2>Open the hatch.<br /><span>Let orders come to you.</span></h2>
           <p>Set up your menu, print the QR and run your next service from one clear queue.</p>
-          <div className="hero-actions"><button className="button button--lime button--large" type="button" onClick={openDemoRequest}>Start your first event <span aria-hidden="true">↗</span></button><a className="button button--ghost button--large" href="/rushdish-order-qr.png" download="rushdish-order-qr.png">Download QR code <span aria-hidden="true">↓</span></a><a className="button button--ghost button--large" href="#live-demo">Try the live demo</a></div>
+          <div className="hero-actions"><button className="button button--lime button--large" type="button" onClick={openDemoRequest}>Start your first event <span aria-hidden="true">↗</span></button><a className="button button--ghost button--large" href="#live-demo">Try the live demo</a></div>
         </section>
       </main>
 
       <footer className="site-footer">
         <div className="footer-brand"><Brand /><p>QR ordering, preparation and pickup for food trucks and event kitchens.</p></div>
         <div className="footer-links"><div><b>Product</b><a href="#product">Overview</a><a href="#how-it-works">How it works</a><a href="#live-demo">Live demo</a><a href="#pricing">Pricing</a></div><div><b>Company</b><button type="button" onClick={openDemoRequest}>Contact</button><a href="#faq">FAQ</a><span>Built in the UK</span></div></div>
-        <div className="footer-bottom"><span>© 2026 RushDish. Working product concept.</span><a href="#top">Back to top ↑</a></div>
       </footer>
 
       {demoModalOpen && (
