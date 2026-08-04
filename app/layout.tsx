@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const forwardedProtocol = requestHeaders.get("x-forwarded-proto");
   const protocol = forwardedProtocol ?? (host.startsWith("localhost") ? "http" : "https");
   const baseUrl = new URL(`${protocol}://${host}`);
-  const socialImage = new URL("/og-final-logo.png", baseUrl).toString();
+  const socialImage = new URL("/og-carnival.png", baseUrl).toString();
 
   return {
     metadataBase: baseUrl,
@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Feed the crowd. Lose the queue.",
       description: "QR ordering for food trucks, festivals and event kitchens.",
       type: "website",
-      images: [{ url: socialImage, width: 1734, height: 907, alt: "RushDish QR ordering for food trucks" }],
+      images: [{ url: socialImage, width: 1734, height: 908, alt: "RushDish QR ordering for food trucks" }],
     },
     twitter: {
       card: "summary_large_image",
