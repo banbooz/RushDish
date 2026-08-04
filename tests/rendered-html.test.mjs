@@ -34,6 +34,8 @@ test("server-renders the complete RushDish landing page", async () => {
   assert.match(html, /Feed the crowd\./);
   assert.match(html, /Lose the queue\./);
   assert.match(html, /See the whole rush in one screen\./);
+  assert.match(html, /Perrett&amp;Thompson/);
+  assert.doesNotMatch(html, />FIREBIRD</);
   assert.match(html, /Clear costs\. No cut of your sales\./);
   assert.match(html, /Good questions\./);
   assert.match(html, /Scan once\./);

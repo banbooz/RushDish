@@ -653,10 +653,11 @@ a {
 }
 
 .truck-photo span {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 850;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.055em;
   transform: rotate(-3deg);
+  white-space: nowrap;
 }
 
 .truck-photo small {

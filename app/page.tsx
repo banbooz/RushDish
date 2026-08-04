@@ -256,7 +256,7 @@ export default function Home() {
               <div className="hero-phone" aria-label="Customer menu preview">
                 <div className="phone-speaker" />
                 <div className="phone-top"><span>9:41</span><span>● ◒</span></div>
-                <div className="truck-photo"><span>FIREBIRD</span><small>SMASH · SIZZLE · SERVE</small></div>
+                <div className="truck-photo"><span>Perrett&amp;Thompson</span><small>SMASH · SIZZLE · SERVE</small></div>
                 <div className="phone-content">
                   <div className="phone-status"><span className="live-dot" /> Accepting orders <b>~14 min</b></div>
                   <p className="phone-eyebrow">Riverlight · East Gate</p>
