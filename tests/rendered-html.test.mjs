@@ -46,7 +46,7 @@ test("server-renders the complete RushDish landing page", async () => {
   assert.match(html, /0% platform fee/);
   assert.match(html, /0% commission fee/);
   assert.doesNotMatch(html, /Download QR code|download-ready|What could a shorter queue be worth\?|Working product concept/i);
-  assert.match(html, /og\.png/);
+  assert.match(html, /og-blue-carnival\.png/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -59,7 +59,7 @@ test("ships project-specific metadata and removes starter assets", async () => {
   ]);
 
   assert.match(layout, /RushDish — QR ordering built for the rush/);
-  assert.match(layout, /\/og\.png/);
+  assert.match(layout, /\/og-blue-carnival\.png/);
   assert.match(page, /"use client"/);
   assert.match(page, /Send test order/);
   assert.doesNotMatch(page, /download=|Download QR code|calculator-section|MOST POPULAR/);
@@ -69,6 +69,6 @@ test("ships project-specific metadata and removes starter assets", async () => {
     createHash("sha256").update(qrBytes).digest("hex").toUpperCase(),
     "347D9E363AF68CC8533B4FDB5FCF60E5978994078B9D494030E42C632FCEDFC7",
   );
-  await access(new URL("../public/og.png", import.meta.url));
+  await access(new URL("../public/og-blue-carnival.png", import.meta.url));
   await assert.rejects(access(new URL("../app/_sites-preview/SkeletonPreview.tsx", import.meta.url)));
 });

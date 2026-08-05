@@ -1,7 +1,14 @@
 {
-  "name": "site-creator-vinext-starter",
+  "name": "rushdish-site",
   "version": "0.1.0",
+  "description": "Interactive RushDish QR-ordering prototype for food trucks, festivals and event kitchens.",
   "private": true,
+  "license": "UNLICENSED",
+  "homepage": "https://rushdish-festival-orders.neotasticproductions.chatgpt.site/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/banbooz/RushDish.git"
+  },
   "engines": {
     "node": ">=22.13.0"
   },
