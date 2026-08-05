@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/banbooz/RushDish/security/advisories/new
+    about: Share security details privately with the repository maintainer.
+  - name: View the live demo
+    url: https://rushdish-festival-orders.neotasticproductions.chatgpt.site/
+    about: Check the current hosted prototype before reporting a problem.

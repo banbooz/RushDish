@@ -1,5 +1,7 @@
 # RushDish
 
+[![CI](https://github.com/banbooz/RushDish/actions/workflows/ci.yml/badge.svg)](https://github.com/banbooz/RushDish/actions/workflows/ci.yml)
+
 ![RushDish — QR ordering for food trucks](./public/og-blue-carnival.png)
 
 RushDish is an interactive QR-ordering concept for food trucks, festivals,
@@ -74,3 +76,18 @@ Before accepting real orders, the project still needs a persistent order
 model, payment-provider integration and webhooks, authenticated crew access,
 real-time multi-device updates, production enquiry handling, and operational
 and security testing.
+
+## Contributing
+
+Contributions and constructive feedback are welcome. Read
+[CONTRIBUTING.md](./CONTRIBUTING.md) before opening an issue or pull request.
+
+## Security
+
+Please do not disclose vulnerabilities in public issues. Follow the private
+reporting process in [SECURITY.md](./SECURITY.md).
+
+## License
+
+No open-source license is currently granted. The package is marked
+`UNLICENSED`, so the repository owner retains all rights.
