@@ -5,5 +5,5 @@ contact_links:
     url: https://github.com/banbooz/RushDish/security/advisories/new
     about: Share security details privately with the repository maintainer.
   - name: View the live demo
-    url: https://rushdish-festival-orders.neotasticproductions.chatgpt.site/
+    url: https://banbooz.github.io/RushDish/
     about: Check the current hosted prototype before reporting a problem.

@@ -56,9 +56,16 @@ const rushModeLabels: Record<RushMode, string> = {
   maxed: "Maxed",
 };
 
+const publicBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const assetPath = (path: string) => `${publicBasePath}${path}`;
+
 function QRMark({ compact = false }: { compact?: boolean }) {
   return (
-    <span className={`qr-mark${compact ? " qr-mark--compact" : ""}`} aria-hidden="true" />
+    <span
+      className={`qr-mark${compact ? " qr-mark--compact" : ""}`}
+      style={{ backgroundImage: `url("${assetPath("/rushdish-order-qr.png")}")` }}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -67,7 +74,7 @@ function Brand() {
     <span className="brand-lockup" role="img" aria-label="RushDish">
       <img
         className="brand-logo"
-        src="/rushdish-logo-final.png"
+        src={assetPath("/rushdish-logo-final.png")}
         alt=""
         width={1023}
         height={358}
@@ -80,7 +87,7 @@ function MiniBrandMark() {
   return (
     <img
       className="mini-brand-mark"
-      src="/rushdish-mark-final.png"
+      src={assetPath("/rushdish-mark-final.png")}
       alt=""
       width={29}
       height={31}

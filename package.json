@@ -4,7 +4,7 @@
   "description": "Interactive RushDish QR-ordering prototype for food trucks, festivals and event kitchens.",
   "private": true,
   "license": "UNLICENSED",
-  "homepage": "https://rushdish-festival-orders.neotasticproductions.chatgpt.site/",
+  "homepage": "https://banbooz.github.io/RushDish/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/banbooz/RushDish.git"
@@ -15,8 +15,10 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:pages": "next build",
     "start": "vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test:pages": "node --test tests/pages-export.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },

@@ -1,6 +1,7 @@
 # RushDish
 
 [![CI](https://github.com/banbooz/RushDish/actions/workflows/ci.yml/badge.svg)](https://github.com/banbooz/RushDish/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/banbooz/RushDish/actions/workflows/pages.yml/badge.svg)](https://github.com/banbooz/RushDish/actions/workflows/pages.yml)
 
 ![RushDish — QR ordering for food trucks](./public/og-blue-carnival.png)
 
@@ -10,7 +11,7 @@ markets, and event kitchens.
 Guests can build an order from their phone while crew members see the same
 order move through received, cooking, ready, and collected states.
 
-[View the live demo](https://rushdish-festival-orders.neotasticproductions.chatgpt.site/)
+[View the GitHub Pages site](https://banbooz.github.io/RushDish/)
 
 > [!IMPORTANT]
 > This repository currently contains a browser-based product prototype. It does
@@ -54,19 +55,24 @@ Open the local URL printed by the development server.
 | --- | --- |
 | `npm run dev` | Start the local development server |
 | `npm run build` | Create a production build |
+| `npm run build:pages` | Create the static GitHub Pages export |
 | `npm run start` | Run the production build locally |
 | `npm run lint` | Run ESLint |
 | `npm test` | Build and test the rendered RushDish page |
+| `npm run test:pages` | Verify the generated GitHub Pages site |
 | `npm run db:generate` | Generate Drizzle migrations if a schema is added |
 
 ## Deployment
 
-The hosted demo is configured for OpenAI Sites. The application is built
-through vinext for a Cloudflare Workers-compatible runtime.
+The public site is built from this repository and deployed by
+[GitHub Actions](./.github/workflows/pages.yml) to
+[GitHub Pages](https://banbooz.github.io/RushDish/). Every push to `main`
+creates a fresh static export and publishes the resulting site.
 
-`.openai/hosting.json` currently declares no D1 database or R2 bucket. Use the
-Sites publishing workflow for this configuration; another hosting provider
-will require its own runtime and deployment setup.
+The existing vinext and OpenAI Sites configuration remains available for the
+Cloudflare Workers build, but it is not the public URL linked by this
+repository. GitHub Pages hosts the browser-based prototype only; it cannot run
+the optional worker, D1 database, authentication, or payment back end.
 
 ## Project status
 

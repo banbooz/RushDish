@@ -60,14 +60,16 @@ test("ships project-specific metadata and removes starter assets", async () => {
 
   assert.match(layout, /RushDish — QR ordering built for the rush/);
   assert.match(layout, /\/og-blue-carnival\.png/);
+  assert.match(layout, /https:\/\/banbooz\.github\.io\/RushDish\//);
   assert.match(page, /"use client"/);
   assert.match(page, /Send test order/);
   assert.doesNotMatch(page, /download=|Download QR code|calculator-section|MOST POPULAR/);
   assert.match(page, /Higher-quality menu and QR design/);
-  assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+  assert.match(packageJson, /https:\/\/banbooz\.github\.io\/RushDish\//);
+  assert.doesNotMatch(packageJson, /react-loading-skeleton|neotasticproductions/);
   assert.equal(
     createHash("sha256").update(qrBytes).digest("hex").toUpperCase(),
-    "347D9E363AF68CC8533B4FDB5FCF60E5978994078B9D494030E42C632FCEDFC7",
+    "1A3C02F64E4CC7A271033EF6A00FBCBA6354280943BCCDA670C24D48C59CED2E",
   );
   await access(new URL("../public/og-blue-carnival.png", import.meta.url));
   await assert.rejects(access(new URL("../app/_sites-preview/SkeletonPreview.tsx", import.meta.url)));
