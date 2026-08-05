@@ -11,6 +11,7 @@ type DemoItem = {
 };
 
 type OrderStage = "building" | "received" | "cooking" | "ready" | "complete";
+type RushMode = "normal" | "busy" | "maxed";
 
 const demoItems: DemoItem[] = [
   {
@@ -49,6 +50,12 @@ const money = new Intl.NumberFormat("en-GB", {
   minimumFractionDigits: 2,
 });
 
+const rushModeLabels: Record<RushMode, string> = {
+  normal: "Normal",
+  busy: "Busy",
+  maxed: "Maxed",
+};
+
 function QRMark({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`qr-mark${compact ? " qr-mark--compact" : ""}`} aria-hidden="true" />
@@ -69,6 +76,19 @@ function Brand() {
   );
 }
 
+function MiniBrandMark() {
+  return (
+    <img
+      className="mini-brand-mark"
+      src="/rushdish-mark-final.png"
+      alt=""
+      width={29}
+      height={31}
+      aria-hidden="true"
+    />
+  );
+}
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [demoTab, setDemoTab] = useState<"guest" | "crew">("guest");
@@ -76,6 +96,10 @@ export default function Home() {
   const [orderStage, setOrderStage] = useState<OrderStage>("building");
   const [demoModalOpen, setDemoModalOpen] = useState(false);
   const [formSent, setFormSent] = useState(false);
+  const [acceptingOrders, setAcceptingOrders] = useState(true);
+  const [pickupMinutes, setPickupMinutes] = useState(14);
+  const [rushMode, setRushMode] = useState<RushMode>("busy");
+  const [loadedFriesSoldOut, setLoadedFriesSoldOut] = useState(true);
 
   const cartRows = useMemo(
     () =>
@@ -110,7 +134,7 @@ export default function Home() {
   }, [demoModalOpen]);
 
   const addItem = (id: string) => {
-    if (!canEditOrder) return;
+    if (!canEditOrder || !acceptingOrders || (id === "fries" && loadedFriesSoldOut)) return;
     setCart((current) => ({ ...current, [id]: (current[id] ?? 0) + 1 }));
   };
 
@@ -126,7 +150,7 @@ export default function Home() {
   };
 
   const sendDemoOrder = () => {
-    if (!cartCount) return;
+    if (!cartCount || !acceptingOrders) return;
     setOrderStage("received");
     setDemoTab("crew");
   };
@@ -155,6 +179,17 @@ export default function Home() {
   const submitDemoRequest = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSent(true);
+  };
+
+  const changePickupMinutes = (delta: number) => {
+    setPickupMinutes((current) => Math.min(60, Math.max(5, current + delta)));
+  };
+
+  const selectRushMode = (mode: RushMode) => {
+    setRushMode(mode);
+    if (mode === "normal") setPickupMinutes(10);
+    if (mode === "busy") setPickupMinutes(14);
+    if (mode === "maxed") setPickupMinutes(22);
   };
 
   const stageLabel: Record<OrderStage, string> = {
@@ -220,9 +255,9 @@ export default function Home() {
 
           <div className="hero-stage" aria-label="RushDish order dashboard preview">
             <div className="dashboard-bar">
-              <div className="dashboard-brand"><span>RD</span> Firebird Kitchen</div>
-              <div className="dashboard-event"><span className="live-dot" /> Riverlight Festival · East Gate</div>
-              <div className="dashboard-avatar">FK</div>
+              <div className="dashboard-brand"><MiniBrandMark /> Perrett&amp;Thompson</div>
+              <div className="dashboard-event"><span className="live-dot" /> Perrett&amp;Thompson</div>
+              <div className="dashboard-avatar" role="img" aria-label="Perrett and Thompson"><MiniBrandMark /></div>
             </div>
             <div className="dashboard-body">
               <aside className="dashboard-sidebar" aria-label="Preview navigation">
@@ -235,8 +270,8 @@ export default function Home() {
               </aside>
               <div className="queue-board">
                 <div className="queue-heading">
-                  <div><span className="mini-label">SAT 18 JUL</span><h2>East Gate · Live</h2></div>
-                  <div className="rush-pill">Busy · 14 min</div>
+                  <div><span className="mini-label">SAT 18 JUL</span><h2>Perrett&amp;Thompson · Live</h2></div>
+                  <div className="rush-pill">{acceptingOrders ? `${rushModeLabels[rushMode]} · ${pickupMinutes} min` : "Orders paused"}</div>
                 </div>
                 <div className="queue-columns">
                   <div className="queue-column">
@@ -263,9 +298,9 @@ export default function Home() {
                 <div className="phone-top"><span>9:41</span><span>● ◒</span></div>
                 <div className="truck-photo"><span>Perrett&amp;Thompson</span><small>SMASH · SIZZLE · SERVE</small></div>
                 <div className="phone-content">
-                  <div className="phone-status"><span className="live-dot" /> Accepting orders <b>~14 min</b></div>
-                  <p className="phone-eyebrow">Riverlight · East Gate</p>
-                  <h3>Firebird Kitchen</h3>
+                  <div className="phone-status"><span className={`live-dot${acceptingOrders ? "" : " live-dot--paused"}`} /> {acceptingOrders ? "Accepting orders" : "Orders paused"} <b>~{pickupMinutes} min</b></div>
+                  <p className="phone-eyebrow">PERRETT&amp;THOMPSON · LIVE</p>
+                  <h3>Perrett&amp;Thompson</h3>
                   <div className="phone-item"><span><b>Double Smash</b><small>House sauce, pickles</small></span><button type="button" tabIndex={-1}>+</button></div>
                   <div className="phone-item"><span><b>Loaded Fries</b><small>Cheese, crispy onions</small></span><button type="button" tabIndex={-1}>+</button></div>
                   <div className="phone-cart">View order <b>2 · £18.00</b></div>
@@ -343,20 +378,24 @@ export default function Home() {
             {demoTab === "guest" ? (
               <div className="guest-demo" role="tabpanel" aria-label="Guest ordering demo">
                 <div className="guest-menu-head">
-                  <div><p>RIVERLIGHT · EAST GATE</p><h3>Firebird Kitchen</h3></div>
-                  <span><i className="live-dot" /> Accepting orders<br /><b>Ready in ~14 min</b></span>
+                  <div><p>PERRETT&amp;THOMPSON · LIVE</p><h3>Perrett&amp;Thompson</h3></div>
+                  <span><i className={`live-dot${acceptingOrders ? "" : " live-dot--paused"}`} /> {acceptingOrders ? "Accepting orders" : "Orders paused"}<br /><b>Ready in ~{pickupMinutes} min</b></span>
                 </div>
 
                 {orderStage === "building" ? (
                   <>
                     <div className="demo-menu-grid">
-                      {demoItems.map((item, index) => (
-                        <article className="demo-menu-item" key={item.id}>
-                          <div className={`food-thumb food-thumb--${index + 1}`} aria-hidden="true"><span>{index === 0 ? "SMASH" : index === 1 ? "FRIES" : index === 2 ? "BOWL" : "COLD"}</span></div>
-                          <div className="demo-item-copy"><span className="item-tag">{item.tag}</span><h4>{item.name}</h4><p>{item.description}</p><b>{money.format(item.price)}</b></div>
-                          <button className="add-button" type="button" onClick={() => addItem(item.id)} aria-label={`Add ${item.name} to demo order`}>+</button>
-                        </article>
-                      ))}
+                      {demoItems.map((item, index) => {
+                        const soldOut = item.id === "fries" && loadedFriesSoldOut;
+                        const unavailable = !acceptingOrders || soldOut;
+                        return (
+                          <article className={`demo-menu-item${unavailable ? " demo-menu-item--unavailable" : ""}`} key={item.id}>
+                            <div className={`food-thumb food-thumb--${index + 1}`} aria-hidden="true"><span>{index === 0 ? "SMASH" : index === 1 ? "FRIES" : index === 2 ? "BOWL" : "COLD"}</span></div>
+                            <div className="demo-item-copy"><span className={`item-tag${unavailable ? " item-tag--sold-out" : ""}`}>{!acceptingOrders ? "Orders paused" : soldOut ? "Sold out" : item.tag}</span><h4>{item.name}</h4><p>{item.description}</p><b>{money.format(item.price)}</b></div>
+                            <button className="add-button" type="button" onClick={() => addItem(item.id)} disabled={unavailable} aria-label={!acceptingOrders ? "Orders are paused" : soldOut ? `${item.name} is sold out` : `Add ${item.name} to demo order`}>{unavailable ? "×" : "+"}</button>
+                          </article>
+                        );
+                      })}
                     </div>
                     <div className="demo-cart" aria-live="polite">
                       <div>
@@ -372,8 +411,8 @@ export default function Home() {
                           </div>
                         ))}
                       </div>
-                      <button className="button button--lime" type="button" disabled={!cartCount} onClick={sendDemoOrder}>
-                        {cartCount ? `Send test order · ${money.format(cartTotal)}` : "Add something tasty"}
+                      <button className="button button--lime" type="button" disabled={!cartCount || !acceptingOrders} onClick={sendDemoOrder}>
+                        {!acceptingOrders ? "Orders are paused" : cartCount ? `Send test order · ${money.format(cartTotal)}` : "Add something tasty"}
                       </button>
                     </div>
                   </>
@@ -382,7 +421,7 @@ export default function Home() {
                     <div className="confirmation-code">D42</div>
                     <p className="eyebrow">Demo order</p>
                     <h3>{stageLabel[orderStage]}</h3>
-                    <p>{orderStage === "ready" ? "Show this screen at the East Gate hatch." : orderStage === "complete" ? "That’s the whole flow—from scan to handoff." : "Keep this page open. The crew status updates here."}</p>
+                    <p>{orderStage === "ready" ? "Show this screen at the Perrett&Thompson hatch." : orderStage === "complete" ? "That’s the whole flow—from scan to handoff." : "Keep this page open. The crew status updates here."}</p>
                     <div className="status-track" aria-label={`Order status: ${stageLabel[orderStage]}`}>
                       {(["received", "cooking", "ready"] as OrderStage[]).map((stage, index) => {
                         const stageOrder = ["received", "cooking", "ready", "complete"];
@@ -400,9 +439,9 @@ export default function Home() {
             ) : (
               <div className="crew-demo" role="tabpanel" aria-label="Crew queue demo">
                 <div className="crew-head">
-                  <div><p className="mini-label">SAT 18 JUL</p><h3>East Gate · Live</h3></div>
+                  <div><p className="mini-label">SAT 18 JUL</p><h3>Perrett&amp;Thompson · Live</h3></div>
                   <div className="crew-metrics"><span><b>{orderStage === "received" ? 1 : 0}</b> Waiting</span><span><b>{orderStage === "cooking" ? 1 : 0}</b> Cooking</span><span><b>{orderStage === "ready" ? 1 : 0}</b> Ready</span></div>
-                  <button className="rush-control-button" type="button">Busy · 14 min</button>
+                  <span className="rush-control-button">{acceptingOrders ? `${rushModeLabels[rushMode]} · ${pickupMinutes} min` : "Orders paused"}</span>
                 </div>
                 {orderStage === "building" ? (
                   <div className="crew-empty"><span>✓</span><h4>All caught up.</h4><p>Build an order in Guest view, then send it here.</p><button className="button button--light" type="button" onClick={() => setDemoTab("guest")}>Build a test order</button></div>
@@ -435,7 +474,6 @@ export default function Home() {
 
         <section className="steps-section section" id="how-it-works">
           <div className="section-heading">
-            <p className="eyebrow">From sign to served</p>
             <h2>Five small steps.<br />One smoother service.</h2>
           </div>
           <div className="steps-list">
@@ -482,11 +520,32 @@ export default function Home() {
             <p className="feature-kicker">Control demand before demand controls the truck.</p>
           </div>
           <div className="control-panel">
-            <div className="control-panel-top"><div><span className="mini-label">EAST GATE</span><h3>Rush controls</h3></div><span className="status-live"><i className="live-dot" /> LIVE</span></div>
-            <div className="control-row"><span><b>Accepting orders</b><small>Existing orders stay visible if paused</small></span><button className="toggle toggle--on" type="button" aria-label="Accepting orders preview is on"><i /></button></div>
-            <div className="control-row"><span><b>Pickup estimate</b><small>Shown before checkout</small></span><div className="stepper"><button type="button" tabIndex={-1}>−</button><b>14 min</b><button type="button" tabIndex={-1}>+</button></div></div>
-            <div className="control-block"><span><b>Rush mode</b><small>Adjust the pace in one tap</small></span><div className="segmented"><button type="button">Normal</button><button className="selected" type="button">Busy</button><button type="button">Maxed</button></div></div>
-            <div className="control-toast"><span>✓</span><div><b>Loaded Fries marked sold out</b><small>Guests can no longer add this item.</small></div></div>
+            <div className="control-panel-top">
+              <div><span className="mini-label">PERRETT&amp;THOMPSON</span><h3>Rush controls</h3></div>
+              <span className={`status-live${acceptingOrders ? "" : " status-live--paused"}`}><i className={`live-dot${acceptingOrders ? "" : " live-dot--paused"}`} /> {acceptingOrders ? "LIVE" : "PAUSED"}</span>
+            </div>
+            <div className="control-row">
+              <span><b>{acceptingOrders ? "Accepting orders" : "Orders paused"}</b><small>Existing orders stay visible if paused</small></span>
+              <button className={`toggle${acceptingOrders ? " toggle--on" : ""}`} type="button" role="switch" aria-checked={acceptingOrders} aria-label={acceptingOrders ? "Pause new orders" : "Resume new orders"} onClick={() => setAcceptingOrders((current) => !current)}><i aria-hidden="true" /></button>
+            </div>
+            <div className="control-row">
+              <span><b>Pickup estimate</b><small>Shown before checkout</small></span>
+              <div className="stepper">
+                <button type="button" onClick={() => changePickupMinutes(-1)} disabled={pickupMinutes <= 5} aria-label="Reduce pickup estimate by one minute">−</button>
+                <output aria-live="polite">{pickupMinutes} min</output>
+                <button type="button" onClick={() => changePickupMinutes(1)} disabled={pickupMinutes >= 60} aria-label="Increase pickup estimate by one minute">+</button>
+              </div>
+            </div>
+            <div className="control-block">
+              <span><b>Rush mode</b><small>Adjust the pace in one tap</small></span>
+              <div className="segmented" role="group" aria-label="Rush mode">
+                {(["normal", "busy", "maxed"] as RushMode[]).map((mode) => <button className={rushMode === mode ? "selected" : ""} type="button" aria-pressed={rushMode === mode} onClick={() => selectRushMode(mode)} key={mode}>{rushModeLabels[mode]}</button>)}
+              </div>
+            </div>
+            <button className={`control-toast${loadedFriesSoldOut ? " control-toast--active" : ""}`} type="button" aria-pressed={loadedFriesSoldOut} aria-label={loadedFriesSoldOut ? "Make Loaded Fries available" : "Mark Loaded Fries sold out"} onClick={() => setLoadedFriesSoldOut((current) => !current)}>
+              <span aria-hidden="true">{loadedFriesSoldOut ? "✓" : "+"}</span>
+              <div aria-live="polite"><b>{loadedFriesSoldOut ? "Loaded Fries marked sold out" : "Loaded Fries available"}</b><small>{loadedFriesSoldOut ? "Guests can no longer add this item. Tap to restore it." : "Guests can add this item. Tap to mark it sold out."}</small></div>
+            </button>
           </div>
         </section>
 

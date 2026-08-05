@@ -12,8 +12,10 @@
   --teal-soft: #ddf6f4;
   --pink: #ec4c91;
   --pink-soft: #ffe1ee;
-  --orange: #ff5a12;
-  --orange-soft: #fff0e8;
+  --blue: #2563eb;
+  --blue-soft: #e8f0ff;
+  --orange: var(--blue);
+  --orange-soft: var(--blue-soft);
   --lime: var(--pink);
   --lime-soft: var(--teal-soft);
   --night: #181220;
@@ -3583,4 +3585,174 @@ body {
   .site-footer {
     border-radius: 28px 28px 0 0;
   }
+}
+
+/* Brand, blue-accent and interaction refinements */
+
+.site-header .brand-logo {
+  mix-blend-mode: multiply;
+}
+
+.mini-brand-mark {
+  display: block;
+  height: 28px;
+  mix-blend-mode: multiply;
+  object-fit: contain;
+  width: 26px;
+}
+
+.dashboard-brand > .mini-brand-mark {
+  flex: 0 0 auto;
+}
+
+.dashboard-avatar {
+  background: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.dashboard-avatar .mini-brand-mark {
+  height: 28px;
+  width: 27px;
+}
+
+.button--lime:hover,
+.hero-qr-card,
+.hero-qr-card span:not(.qr-mark):not(.qr-cell),
+.truck-photo,
+.sold-out-chip b,
+.food-thumb--1 span,
+.recommended-badge,
+.final-qr {
+  color: var(--white);
+}
+
+.truck-photo {
+  background:
+    linear-gradient(135deg, var(--blue), var(--purple)),
+    repeating-linear-gradient(45deg, transparent 0 8px, rgba(24, 18, 32, 0.08) 8px 16px);
+}
+
+.food-thumb::after {
+  background: var(--blue-soft);
+}
+
+.order-card .item-note,
+.live-order-items small {
+  color: var(--purple);
+}
+
+.qr-scan-section {
+  background:
+    radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.18), transparent 28%),
+    var(--blue);
+  border-color: var(--blue);
+  box-shadow: 0 24px 65px rgba(37, 99, 235, 0.18);
+}
+
+.qr-scan-preview {
+  background:
+    radial-gradient(circle at 45% 42%, rgba(236, 76, 145, 0.25), transparent 31%),
+    radial-gradient(circle at 78% 18%, rgba(37, 99, 235, 0.28), transparent 24%),
+    var(--ink);
+}
+
+.final-cta {
+  background:
+    radial-gradient(circle at 18% 10%, rgba(236, 76, 145, 0.24), transparent 28%),
+    radial-gradient(circle at 86% 84%, rgba(37, 99, 235, 0.25), transparent 30%),
+    radial-gradient(circle at 72% 12%, rgba(0, 125, 122, 0.2), transparent 24%),
+    linear-gradient(145deg, var(--purple), var(--ink) 67%);
+}
+
+.live-dot--paused {
+  background: var(--muted);
+  box-shadow: 0 0 0 4px rgba(107, 100, 119, 0.16);
+}
+
+.demo-menu-item--unavailable {
+  background: var(--blue-soft);
+  opacity: 0.72;
+}
+
+.item-tag--sold-out {
+  color: var(--blue);
+}
+
+.add-button:disabled {
+  background: var(--muted);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.toggle,
+.toggle i,
+.stepper button,
+.segmented button,
+.control-toast {
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease, margin 180ms ease;
+}
+
+.toggle,
+.stepper button,
+.segmented button,
+.control-toast {
+  cursor: pointer;
+}
+
+.toggle:hover,
+.stepper button:hover:not(:disabled),
+.segmented button:hover {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.stepper button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.stepper output {
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 38px;
+  text-align: center;
+}
+
+.status-live--paused {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.control-toast {
+  border: 0;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.control-toast:hover {
+  box-shadow: 0 10px 24px rgba(90, 54, 201, 0.2);
+  transform: translateY(-2px);
+}
+
+.control-toast > span {
+  flex: 0 0 auto;
+}
+
+.control-toast:not(.control-toast--active) > span {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.feature-card {
+  position: relative;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 28px 58px rgba(90, 54, 201, 0.18);
+  transform: translateY(-10px) scale(1.015);
+  z-index: 2;
 }
